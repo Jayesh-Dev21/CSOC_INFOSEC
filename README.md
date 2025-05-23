@@ -1,1 +1,4 @@
-# CSOC_Week0
+# CSOC INFOSEC Submission
+
+> Jayesh Krishan Puri
+> 24155058
