@@ -1,0 +1,56 @@
+[
+    {
+        "user": "Jack",
+        "user_id": 1,
+        "tasks": [
+            {
+                "task_id": "t001",
+                "task_objective": "Create a new user",
+                "task_status": false
+            },
+            {
+                "task_id": "t002",
+                "task_objective": "Create a new user again",
+                "task_status": false
+            }
+        ]
+    },
+    {
+        "user": "Eva",
+        "user_id": 2,
+        "tasks": [
+            {
+                "task_id": "t001",
+                "task_objective": "Make a game",
+                "task_status": true
+            },
+            {
+                "task_id": "t002",
+                "task_objective": "Ride a horse",
+                "task_status": false
+            }
+        ]
+    },
+    {
+        "user": "Jayesh",
+        "user_id": 3,
+        "tasks": [
+            {
+                "task_id": "t001",
+                "task_objective": "Code a bit more",
+                "task_status": true
+            }
+        ]
+    },
+    {
+        "user": "CoCo",
+        "user_id": 4,
+        "tasks": [
+            {
+                "task_id": "t001",
+                "task_objective": "Eat Food",
+                "task_status": true
+            }
+        ]
+    }
+]
