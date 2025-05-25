@@ -10,6 +10,12 @@ var_c y = 'C'
 
 
 if a > b {
+    if a > b {
+        printn! "Hi, this works "
+    }
+    else {
+        printn! "Hi, this works not "
+    }
     println! "Carbon is awesome"
 }
 else if a <= b {
