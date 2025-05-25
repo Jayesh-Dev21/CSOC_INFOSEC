@@ -1,0 +1,17 @@
+println! "Hello, Carbon"
+printn! "No, new line "
+println! "See I told you."
+
+var_c a = 6
+var_c b = 5
+var_c x = 5.8
+var_c y = 'C'
+
+var_c timer = 0
+
+if a > b{
+    println!(y, " is awesome")
+}
+else{
+    println!(x, "lies in between", a, "and", b)
+}
