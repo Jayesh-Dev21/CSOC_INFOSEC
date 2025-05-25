@@ -77,25 +77,25 @@ void playerStats(Player *localplayer){
 
 void help(){
     banner("HELP");
-    printf("🎲 Russian Roulette -> A Game of Chance, Guts, and Glory 🎲\n");
+    printf("Russian Roulette -> A Game of Chance, Guts, and Glory\n");
     printf("=========================================================================\n");
-    printf("🧠 Objective:\n");
+    printf("Objective:\n");
     printf("   Survive the chamber. Outlast the bots. Earn money with every\n");
     printf("   pull of the trigger — but beware, one mistake ends it all.\n\n");
-    printf("🔫 How It Works:\n");
+    printf("How It Works:\n");
     printf("   - A revolver with 6 chambers is loaded with a random number of bullets.\n");
     printf("   - Chambers are shuffled before every round.\n");
     printf("   - Players take turns pulling the trigger in random order.\n");
     printf("   - Survive to earn money; a bullet means elimination.\n\n");
-    printf("🎮 Menu Options:\n");
+    printf("Menu Options:\n");
     printf("   0. Help         -> You're reading it!\n");
     printf("   1. Play         -> Enter the game. Spin the cylinder. Take the risk.\n");
     printf("   2. New Game     -> Reset progress and start fresh.\n");
     printf("   3. Exit         -> Walk away (with your head still attached).\n\n");
-    printf("💰 Rewards:\n");
+    printf("Rewards:\n");
     printf("   - Surviving a shot earns you $1000.\n");
     printf("   - Outlasting bots increases your earnings.\n\n");
-    printf("⚠️ Warning:\n");
+    printf("Warning:\n");
     printf("   This game is for virtual thrills only.\n");
     printf("   Don't try this in real life — seriously.\n");
     banner("HELP");
