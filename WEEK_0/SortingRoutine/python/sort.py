@@ -23,48 +23,6 @@ def insertion_sort(arr):
         arr[j + 1] = key
     return arr
 
-def merge_sort(arr):
-    
-    if len(arr) > 1:
-        mid = len(arr) // 2
-        L = arr[:mid]
-        R = arr[mid:]
-
-        merge_sort(L)
-        merge_sort(R)
-
-        i = j = k = 0
-
-        while i < len(L) and j < len(R):
-            if L[i] < R[j]:
-                arr[k] = L[i]
-                i += 1
-            else:
-                arr[k] = R[j]
-                j += 1
-            k += 1
-
-        while i < len(L):
-            arr[k] = L[i]
-            i += 1
-            k += 1
-
-        while j < len(R):
-            arr[k] = R[j]
-            j += 1
-            k += 1
-    return arr
-
-def quick_sort(arr):
-    if len(arr) <= 1:
-        return arr
-    else:
-        pivot = arr[len(arr) // 2]
-        left = [x for x in arr if x < pivot]
-        middle = [x for x in arr if x == pivot]
-        right = [x for x in arr if x > pivot]
-        return quick_sort(left) + middle + quick_sort(right)
-    
 def print_array(arr):
     print(" ".join(map(str, arr)))
 
@@ -73,8 +31,6 @@ def choose_sorting_algorithm():
     print("Choose sorting algorithm:")
     print("1. Bubble Sort")
     print("2. Insertion Sort")
-    print("3. Merge Sort")
-    print("4. Quick Sort")
     try:
         choice = int(input("Enter your choice: "))
     except ValueError:
@@ -87,10 +43,6 @@ def choosed_sorting_algorithm(choice, array):
         bubble_sort(array)
     elif choice == 2:
         insertion_sort(array)
-    elif choice == 3:
-        merge_sort(array)
-    elif choice == 4:
-        quick_sort(array)
     else:
         print("Invalid choice")
         return -1
