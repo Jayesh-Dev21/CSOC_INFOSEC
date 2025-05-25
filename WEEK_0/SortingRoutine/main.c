@@ -3,8 +3,6 @@
 
 #include "sortFunctions/headerFiles/bubbleSort.h"
 #include "sortFunctions/headerFiles/insertionSort.h"  
-#include "sortFunctions/headerFiles/mergeSort.h"
-#include "sortFunctions/headerFiles/quickSort.h"
 
 void printArray(int arr[], int size) {
     for (int i = 0; i < size; i++)
@@ -17,8 +15,6 @@ int chooseSortingAlgorithm(){
     printf("choose sorting algorithm:\n");
     printf("1. Bubble Sort\n"); 
     printf("2. Insertion Sort\n");
-    printf("3. Merge Sort\n");
-    printf("4. Quick Sort\n");
     printf("Enter your choice: ");
     scanf("%d", &n);
     return n;
@@ -31,12 +27,6 @@ int choosedSortingAlgorithm(int choice, int array[], int n) {
             break;
         case 2:
             insertion_sort(array, n);
-            break;
-        case 3:
-            merge_sort(array, 0, n - 1);
-            break;
-        case 4:
-            quick_sort(array, 0, n - 1);
             break;
         default:
             printf("Invalid choice\n");
