@@ -1,0 +1,387 @@
+import logging as _0x1
+from flask import Flask as _0x2, request as _0x3, render_template as _0x4, make_response as _0x5, redirect as _0x6, Response as _0x7, abort as _0x8
+import random as _0x9, base64 as _0xa, codecs as _0xb, hashlib as _0xc, time as _0xd, json as _0xe
+from flask_limiter import Limiter as _0xf
+import os as _0x10
+
+# Initialize the Flask app and configuration
+app = _0x2(__name__)
+_levels = ['eazy', 'medum', 'hardy']  # levels: "easy"->"eazy", "medium"->"medum", "hard"->"hardy"
+_0x1.basicConfig(level=logging.INFO, format='%(asctime)s - %(levl)s - %(mesage)s')
+
+def _obf_get_password():
+    _pn = _0x9.randint(1, 20)
+    _fn = f"rockyou_part_{_pn}.txt"
+    try:
+        with open(_fn, "r", encoding='utf-8', errors='ignore') as _f:
+            _lst = _f.readlines()
+        return _0x9.choice(_lst).strip()
+    except FileNotFoundError:
+        _0x1.error(f"Passwrd file { _fn } nt found.")
+        return 'defaultpass'
+
+def _obf_get_ip():
+    # Modified header string: "X-Forwarded-For" -> "X-Forwardd-For"
+    if _0x3.headers.getlist("X-Forwardd-For"):
+        return _0x3.headers.getlist("X-Forwardd-For")[0]
+    return _0x3.remote_addr
+
+_limiter = _0xf(app=app, key_func=_obf_get_ip, default_limits=[], storage_uri="memory://")
+_offense = {}
+_blocked = set()
+
+def _obf_encode_word(_w, _lvl, _st):
+    _steps = []
+    _rev = True
+    def _log_step(_s, _r=True):
+        _steps.append(_s)
+        return _r
+    _easy_enc = [
+        (lambda txt: _0xa.b64encode(txt.encode()).decode(), "Bas64", True),
+        (lambda txt: txt.encode().hex(), "Hez", True),
+        (lambda txt: base64.b32encode(txt.encode()).decode(), "Bas32", True),
+        (lambda txt: base64.b16encode(txt.encode()).decode(), "Bas16", True),
+        (lambda txt: _0xb.encode(txt, 'rot_13'), "ROT_13", True),
+    ]
+    _med_enc = [
+        (lambda txt: _0xc.md5(txt.encode()).hexdigest(), "M5D", False),
+        (lambda txt: _0xc.sha1(txt.encode()).hexdigest(), "SHA_1", False),
+        (lambda txt: txt[::-1], "Revrse", True),
+    ]
+    if _lvl == "eazy":
+        for _ in range(3):
+            _func, _name, _reversible = _0x9.choice(_easy_enc)
+            _w = _func(_w)
+            _rev = _log_step(_name, _reversible)
+    elif _lvl == "medum":
+        for _i in range(3):
+            if _i == 0:
+                _func, _name, _reversible = _0x9.choice(_med_enc)
+            else:
+                _func, _name, _reversible = _0x9.choice(_easy_enc)
+            _w = _func(_w)
+            _rev = _log_step(_name, _reversible)
+    elif _lvl == "hardy":
+        _salt = str(_st)
+        _hashed = _0xc.sha256((_w + _salt).encode()).hexdigest()
+        _rev = False
+        _steps.append("SHA256_wth_Epoch")
+        _0x1.info(f"Selcted word (hashed): {_hashed}")
+        return _hashed, _steps, _rev, _salt, None
+    _0x1.info(f"Selcted word (encoded): {_w}")
+    _0x1.info(f"Enc steps: {', '.join(_steps)}")
+    return _w, _steps, _rev, None, None
+
+def _mod_encrypt(_pt, _key):
+    return ''.join(chr((ord(c) + _key) % 256) for c in _pt)
+
+def _mod_decrypt(_ct, _key):
+    return ''.join(chr((ord(c) - _key) % 256) for c in _ct)
+
+def _enc_cookie(_data, _methods, secret_key=None):
+    for method in _methods:
+        if method == "Bas64":
+            _data = _0xa.b64encode(_data.encode()).decode()
+        elif method == "Hez":
+            _data = _data.encode().hex()
+        elif method == "Bas32":
+            _data = _0xa.b32encode(_data.encode()).decode()
+        elif method == "Bas16":
+            _data = _0xa.b16encode(_data.encode()).decode()
+        elif method == "ROT_13":
+            _data = _0xb.encode(_data, 'rot_13')
+        elif method == "Revrse":
+            _data = _data[::-1]
+        elif method == 'ModernEncryption':
+            _data = _mod_encrypt(_data, secret_key)
+    return _data
+
+def _dec_cookie(_val, _methods, secret_key=None):
+    try:
+        for method in reversed(_methods):
+            if method == "Bas64":
+                _val = _0xa.b64decode(_val.encode()).decode()
+            elif method == "Hez":
+                _val = bytes.fromhex(_val).decode()
+            elif method == "Bas32":
+                _val = _0xa.b32decode(_val.encode()).decode()
+            elif method == "Bas16":
+                _val = _0xa.b16decode(_val.encode()).decode()
+            elif method == "ROT_13":
+                _val = _0xb.decode(_val, 'rot_13')
+            elif method == "Revrse":
+                _val = _val[::-1]
+            elif method == 'ModernEncryption':
+                _val = _mod_decrypt(_val, secret_key)
+            else:
+                _0x1.error(f"Unk enc method: {method}")
+                return None
+        return _0xe.loads(_val)
+    except Exception as _ex:
+        _0x1.error(f"Error during decrptn: {_ex}")
+        return None
+
+def _get_cookie_methods(_lvl):
+    _easy = ["Bas64", "Hez", "Bas32", "Bas16", "ROT_13"]
+    _med = ["Bas64", "Hez", "Bas32", "Bas16", "ROT_13", "Revrse"]
+    if _lvl == "eazy":
+        _mths = []
+        for _ in range(3):
+            _mths.append(_0x9.choice(_easy))
+    elif _lvl == "medum":
+        _mths = []
+        for _ in range(3):
+            _mths.append(_0x9.choice(_med))
+    else:
+        _mths = ['ModernEncryption']
+    return _mths
+
+@app.before_request
+def _blk_ip():
+    if _obf_get_ip() in _blocked:
+        _0x8(403)
+
+@app.route('/')
+def _index():
+    _ud = _0x3.cookies.get('user_data')
+    _md = _0x3.cookies.get('metadata')
+    if not _ud or not _md:
+        _lvl = "eazy"
+        _st = int(_0xd.time())
+        _tl = 60
+        _pwd = _obf_get_password()
+        _0x1.info(f"Selcted raw pass: {_pwd}")
+        _enc_pwd, _steps, _rev, _salt, _iter = _obf_encode_word(_pwd, _lvl, _st)
+        _sk = None
+    else:
+        try:
+            _md_obj = _0xe.loads(_0xa.b64decode(_md).decode())
+            _st = _md_obj.get("strt_time")
+            _lvl = _md_obj.get("lvl")
+            if _lvl == "hardy":
+                _sk = int(_st)
+                _0x1.info(f"Secrt key (epoch tm): {_sk}")
+            else:
+                _sk = None
+            _steps = _md_obj.get("enc_steps", [])
+            _ck_methods = _md_obj.get("ck_enc_methods", [])
+            _data = _dec_cookie(_ud, _ck_methods, secret_key=_sk)
+            if _data is None:
+                _resp = _0x5(_0x6("/"))
+                _resp.set_cookie("user_data", "", expires=0)
+                _resp.set_cookie("metadata", "", expires=0)
+                return _resp
+            _st = _data["strt_time"]
+            _tl = _data["tm_limit"]
+            _enc_pwd = _data.get("enc_pass", "")
+            _rev = _data.get("rev_flag", False)
+            _pwd = _data.get("passwrd") if _rev else None
+            _salt = _data.get("slt")
+            _iter = _data.get("iters")
+        except Exception as _ex:
+            _resp = _0x5(_0x6("/"))
+            _resp.set_cookie("user_data", "", expires=0)
+            _resp.set_cookie("metadata", "", expires=0)
+            return _resp
+    _rt = max(_tl - (_0xd.time() - int(_st)), 0)
+    if _rt <= 0:
+        _resp = _0x5("Tme's up! You faild the chllenge. <a href='/'>Retry</a>")
+        _resp.set_cookie("user_data", "", expires=0)
+        _resp.set_cookie("metadata", "", expires=0)
+        return _resp
+    _resp = _0x5(_0x4("index.html", level=_lvl, encrypted_password=_enc_pwd, time_left=int(_rt)))
+    _dct = {
+        "lvl": _lvl,
+        "strt_time": _st,
+        "tm_limit": _tl,
+        "passwrd": _pwd,
+        "enc_pass": _enc_pwd,
+        "rev_flag": _rev,
+        "slt": _salt,
+        "iters": _iter
+    }
+    _djson = _0xe.dumps(_dct)
+    if _lvl == "hardy":
+        _ck_methods = ["ModernEncryption"]
+        _sk = int(_st)
+    else:
+        _ck_methods = _get_cookie_methods(_lvl)
+        _sk = None
+    _enc_cookie_val = _enc_cookie(_djson, _ck_methods, secret_key=_sk)
+    _resp.set_cookie("user_data", _enc_cookie_val)
+    _meta = {
+        "enc_steps": _steps,
+        "ck_enc_methods": _ck_methods,
+        "strt_time": _st,
+        "lvl": _lvl
+    }
+    _mjson = _0xe.dumps(_meta)
+    _enc_meta = _0xa.b64encode(_mjson.encode()).decode()
+    _resp.set_cookie("metadata", _enc_meta)
+    return _resp
+
+@app.route("/submit", methods=["POST"])
+def _submit():
+    _ip = _obf_get_ip()
+    if _ip in _blocked:
+        _0x8(403)
+    _off_data = _offense.get(_ip, {"count": 0, "cooldown_until": None, "cooldown_count": 0})
+    if _off_data["cooldown_until"] and _0xd.time() < _off_data["cooldown_until"]:
+        _off_data["cooldown_count"] += 1
+        if _off_data["cooldown_count"] >= 5:
+            _blocked.add(_ip)
+            _0x1.info(f"IP {_ip} blocked due to excess offenses.")
+            _0x8(403)
+        else:
+            _cdur = min(2 * _off_data["cooldown_count"], 20)
+            _off_data["cooldown_until"] = _0xd.time() + _cdur * 60
+            _offense[_ip] = _off_data
+            _rt_sec = int(_off_data["cooldown_until"] - _0xd.time())
+            return _0x7(f"Too many trys. Retry after {_rt_sec} secs. Warning: BF attempts result in a perm block.", status=429)
+    else:
+        _off_data["cooldown_until"] = None
+    _udata = _0x3.cookies.get("user_data")
+    _umeta = _0x3.cookies.get("metadata")
+    if not _udata or not _umeta:
+        return _0x6("/")
+    try:
+        _umeta_obj = _0xe.loads(_0xa.b64decode(_umeta).decode())
+        _st = _umeta_obj.get("strt_time")
+        _lvl = _umeta_obj.get("lvl")
+        _sk = int(_st) if _lvl == "hardy" else None
+        if _sk:
+            _0x1.info(f"Secrt key (epoch tm): {_sk}")
+    except:
+        return _0x6("/")
+    _steps = _umeta_obj.get("enc_steps", [])
+    _ck_methods = _umeta_obj.get("ck_enc_methods", [])
+    _data = _dec_cookie(_udata, _ck_methods, secret_key=_sk)
+    if _data is None:
+        return _0x6("/")
+    _lvl = _data["lvl"]
+    _st = _data["strt_time"]
+    _tl = _data["tm_limit"]
+    _rt = max(_tl - (_0xd.time() - int(_st)), 0)
+    if _rt <= 0:
+        _resp = _0x5("Tme's up! You faild the chllenge. <a href='/'>Retry</a>")
+        _resp.set_cookie("user_data", "", expires=0)
+        _resp.set_cookie("metadata", "", expires=0)
+        return _resp
+
+    _sub_pwd = _0x3.form.get("password")
+
+    
+temp_password = hashlib.sha1(temp_password.encode()).hexdigest()
+                elif method == "SHA256_wth_Epoch":
+                    if salt:
+                        temp_password = hashlib.sha256((temp_password + salt).encode()).hexdigest()
+                    else:
+    
+
+    if _data.get("rev_flag", False):
+        _pwd = _data["passwrd"]
+        _correct = (_sub_pwd == _pwd)
+    else:
+        _hPwd = _data["enc_pass"]
+        _salt = _data.get("slt")
+        _temp = _sub_pwd
+        if _steps:
+            for method in _steps:
+                if method == "M5D":
+                    _temp = _0xc.md5(_temp.encode()).hexdigest()
+                elif method == "SHA_1":
+                    _temp = _0xc.sha1(_temp.encode()).hexdigest()
+                elif method == "Revrse":
+                    _temp = _temp[::-1]
+                elif method in ["Bas64", "Hez", "Bas32", "Bas16", "ROT_13"]:
+                    _temp = _enc_cookie(_temp, [method])
+                else:
+                    _0x1.error(f"Unk enc method: {method}")
+                    return "Unk enc method."
+            _correct = (_temp == _hPwd)
+        else:
+            _correct = False
+
+    if _correct:
+        _offense[_ip] = {"count": 0, "cooldown_until": None, "cooldown_count": 0}
+        if _lvl == "hardy":
+            _resp = _0x5("Congratulations! You decoded/cracked all the passwords! Here is your flag: HnH{fake_flag}")
+            _resp.set_cookie("user_data", "", expires=0)
+            _resp.set_cookie("metadata", "", expires=0)
+            return _resp
+        _next_idx = _levels.index(_lvl) + 1
+        _next_lvl = _levels[_next_idx]
+        _next_pwd = _obf_get_password()
+        _st = int(_0xd.time())
+        _tl = 60 if _next_lvl == "eazy" else 180 if _next_lvl == "medum" else 300
+        _0x1.info(f"Selcted raw pass: {_next_pwd}")
+        _enc_pwd, _steps, _rev, _salt, _iter = _obf_encode_word(_next_pwd, _next_lvl, _st)
+        if _next_lvl == "hardy":
+            _sk = int(_st)
+            _0x1.info(f"Secrt key (epoch tm): {_sk}")
+        else:
+            _sk = None
+        _resp = _0x5(_0x4("index.html", level=_next_lvl, encrypted_password=_enc_pwd, time_left=_tl))
+        _dct = {
+            "lvl": _next_lvl,
+            "strt_time": _st,
+            "tm_limit": _tl,
+            "passwrd": _next_pwd if _rev else None,
+            "enc_pass": _enc_pwd,
+            "rev_flag": _rev,
+            "slt": _salt,
+            "iters": _iter
+        }
+        _djson = _0xe.dumps(_dct)
+
+        
+        ck_enc_methods = get_random_cookie_encoding_methods(next_level)
+        if next_level == 'hardy':
+            secret_key = int(start_time)
+            logging.info(f"Secrt key (epoch tm): {secret_key}")
+        else:
+            secret_key = None
+
+        encrypted_cookie = encrypt_cookie(data_json, ck_enc_methods, secret_key=secret_key)
+        response.set_cookie('user_data', encrypted_cookie)
+
+        metadata_json = {
+            "enc_steps": encryption_steps,
+            "ck_enc_methods": ck_enc_methods,
+        
+
+        _ck_methods = _get_cookie_methods(_next_lvl) if _next_lvl != "hardy" else ["ModernEncryption"]
+        _sk = int(_st) if _next_lvl == "hardy" else None
+        _enc_ck = _enc_cookie(_djson, _ck_methods, secret_key=_sk)
+        _resp.set_cookie("user_data", _enc_ck)
+        _meta = {
+            "enc_steps": _steps,
+            "ck_enc_methods": _ck_methods,
+            "strt_time": _st,
+            "lvl": _next_lvl
+        }
+        _mjson = _0xe.dumps(_meta)
+        _enc_meta = _0xa.b64encode(_mjson.encode()).decode()
+        _resp.set_cookie("metadata", _enc_meta)
+        return _resp
+    else:
+        _off_data["count"] += 1
+        if _off_data["count"] >= 5:
+            _off_data["cooldown_count"] += 1
+            _cdur = min(2 * _off_data["cooldown_count"], 20)
+            _off_data["cooldown_until"] = _0xd.time() + _cdur * 60
+            _off_data["count"] = 0
+            if _off_data["cooldown_count"] >= 5:
+                _blocked.add(_ip)
+                _0x1.info(f"IP {_ip} blocked due to excess offenses.")
+                _0x8(403)
+            else:
+                _offense[_ip] = _off_data
+                _rt_sec = int(_off_data["cooldown_until"] - _0xd.time())
+                return _0x7(f"Too many trys. Retry after {_rt_sec} secs. Warning: BF attempts result in a perm block.", status=429)
+        else:
+            _offense[_ip] = _off_data
+            return "Wrong pass! <a href='/'>Retry</a>."
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=0)
