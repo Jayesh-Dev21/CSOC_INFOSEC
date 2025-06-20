@@ -1,3 +1,4 @@
+```bash
 ❯ grep -r "picoCTF{"
 ❯ exiftool cat.jpg
 ExifTool Version Number         : 13.25
@@ -25,6 +26,8 @@ Image Width                     : 2560
 Image Height                    : 1598
 Encoding Process                : Baseline DCT, Huffman coding
 Bits Per Sample                 : 8
+
+```
 Color Components                : 3
 Y Cb Cr Sub Sampling            : YCbCr4:2:0 (2 2)
 Image Size                      : 2560x1598
