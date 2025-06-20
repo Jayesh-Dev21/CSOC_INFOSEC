@@ -261,3 +261,12 @@ I searched its 3 digit airport code which was `HND`
 
 
 And so I completed this room except one chall from task 5
+
+
+---
+**updtae**
+
+I tried wigle on my phone and it worked and so I got the BSSID for SSID - DK1F-G to be 
+`84:af:ec:34:fc:f8`
+
+![img](./task-5/phone.png)
