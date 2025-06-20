@@ -27,10 +27,10 @@ Image Height                    : 1598
 Encoding Process                : Baseline DCT, Huffman coding
 Bits Per Sample                 : 8
 
-```
 Color Components                : 3
 Y Cb Cr Sub Sampling            : YCbCr4:2:0 (2 2)
 Image Size                      : 2560x1598
 Megapixels                      : 4.1
 ❯ echo "cGljb0NURnt0aGVfbTN0YWRhdGFfMXNfbW9kaWZpZWR9" | base64 -d
 picoCTF{the_m3tadata_1s_modified}%     
+```
