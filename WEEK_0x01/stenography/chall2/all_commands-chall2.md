@@ -1,3 +1,4 @@
+```bash
 ❯ ..folder chall2
 ❯ wget https://mercury.picoctf.net/static/2978e1270538613cd8181c7b0dabe9bd/dolls.jpg
 --2025-06-14 22:14:46--  https://mercury.picoctf.net/static/2978e1270538613cd8181c7b0dabe9bd/dolls.jpg
@@ -316,4 +317,5 @@ Analyzed 1 file for 85 file signatures (187 magic patterns) in 11.0 milliseconds
 ❯ ls
  flag.txt
 ❯ cat flag.txt
-picoCTF{4cf7ac000c3fb0fa96fb92722ffb2a32}%
+picoCTF{4cf7ac000c3fb0fa96fb92722ffb2a32}
+```
