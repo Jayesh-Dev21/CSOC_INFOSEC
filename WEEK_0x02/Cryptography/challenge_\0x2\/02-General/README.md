@@ -139,7 +139,7 @@ def decode(encoded_type, encoded_data):
     elif encoded_type == "utf-8":
         return ''.join([chr(b) for b in encoded_data])
     else:
-        raise ValueError(f"Unsupported encoding type: {encoded_type}")
+        print("Unsupported encoding type: {encoded_type}")
 
 
 for i in range(100):
