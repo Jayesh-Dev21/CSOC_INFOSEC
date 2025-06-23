@@ -251,5 +251,5 @@ long long func(long long a , long long m, long long p){
   return ((t)*(func(a,m-1,p)))%p;
 }
 ```
-
+more optimized code can be written here to improve the time complexty but we are not here for that.
 ---
