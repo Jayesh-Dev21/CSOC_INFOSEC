@@ -224,4 +224,32 @@ d = pow(a, m-2, m) # it ressambles a^m-2 mod m
 
 print(d)
 ```
+
+I wrote the smae code in c as well
+
+```c
+#include <stdio.h>
+
+long long func(long long, long long, long long);
+
+int main()
+{
+  long long a = 3, d, p =13;
+  // d = a^-1 = (a^p-2) mod p
+  d = func(a,p-2, p);
+  
+  printf("%lld", d);
+}
+
+long long func(long long a , long long m, long long p){
+  long long t = a%p;
+  if(m==0){
+    return 1;
+  }
+  // (a.b.c)%d
+  // ((a%d).(((a%d).(a%d))%d))%d
+  return ((t)*(func(a,m-1,p)))%p;
+}
+```
+
 ---
