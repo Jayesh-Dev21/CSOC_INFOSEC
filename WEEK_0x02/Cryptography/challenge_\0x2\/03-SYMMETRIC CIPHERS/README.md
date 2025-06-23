@@ -12,7 +12,7 @@ A "block" just refers to a fixed number of bits or bytes, which may represent an
 
 **Resisting Bruteforce**
 
-Biclique Attack redues the security margin only slightly, from 128 bits to 126.1 bits
+Biclique Attack redues the security margin of AES-128 only slightly, from 128 bits to 126.1 bits
 
 `flag - crypto{Biclique}`
 
