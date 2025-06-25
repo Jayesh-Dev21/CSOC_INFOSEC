@@ -5,8 +5,9 @@ RSA (Rivest–Shamir–Adleman) algorithm
 ```
 
 Resources:
-1. [blog](https://leimao.github.io/article/RSA-Algorithm/)
+1. [blog on RSA and Euler's Totient for a product of relatively co-prime numbers, using the Chinese Remainder Theorem](https://leimao.github.io/article/RSA-Algorithm/)
 
+<hr>
 
 1. [Starter](#starter)
 2. [Public Exponent](#public-exponent)
