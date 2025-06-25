@@ -197,9 +197,9 @@ thus `output - 1`
 
 So to calculate `a^-1` or modulo inverse of `a` or `a.a^-1 ≡ 1 mod p` let `a^-1` be `d`
 
-and to calculate `d` we can find `a^p-2 mod p` using `Fermant's Little Theorm`
+And to calculate `d` we can find `a^p-2 mod p` using `Fermant's Little Theorm`
 
-1. Bruteforce
+1. Brute Force
 ```python
 # a.d  ≅ b mod m
 
@@ -225,7 +225,7 @@ d = pow(a, m-2, m) # it ressambles a^m-2 mod m
 print(d)
 ```
 
-I wrote the smae code in c as well
+I wrote the small code in C as well
 
 ```c
 #include <stdio.h>
