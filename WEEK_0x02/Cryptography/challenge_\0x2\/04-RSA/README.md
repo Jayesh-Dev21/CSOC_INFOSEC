@@ -1,5 +1,13 @@
 # Challenge - 2 {Crypto} [Sub Chall 2] RSA
 
+```
+RSA (Rivest–Shamir–Adleman) algorithm
+```
+
+Resources:
+1. [blog](https://leimao.github.io/article/RSA-Algorithm/)
+
+
 1. [Starter](#starter)
 2. [Public Exponent](#public-exponent)
 
@@ -91,10 +99,52 @@ long long func(long long a , long long m, long long p){
 
 **Starter/Euler's Totient**
 
+python code
+```python
+e=65537 
+p = 857504083339712752489993810777
+q = 1029224947942998075080348647219
+
+N = p*q
+
+def encrypt(d,e,N):
+  return pow(d,e,N)
+  
+def eulers_totient(p,q):
+  n_totient = (p-1)*(q-1)
+  return n_totient
+
+
+print(eulers_totient(p,q))
+```
+
+`output - 882564595536224140639625987657529300394956519977044270821168`
 
 ---
 
 **Starter/Private Keys**
+
+python code
+```
+e=65537 
+p = 857504083339712752489993810777
+q = 1029224947942998075080348647219
+N = p*q
+
+def encrypt(d,e_,N_):
+  return pow(d,e_,N_)
+  
+def decrypt(d,e,N):
+  return pow(d,e,N)
+  
+def eulers_totient(p_,q_):
+  n_totient = (p_-1)*(q_-1)
+  return n_totient
+
+print(decrypt(e, -1, eulers_totient(p,q)))
+```
+
+`output - 121832886702415731577073962957377780195510499965398469843281`
 
 
 ---
