@@ -126,7 +126,7 @@ print(eulers_totient(p,q))
 **Starter/Private Keys**
 
 python code
-```
+```python
 e=65537 
 p = 857504083339712752489993810777
 q = 1029224947942998075080348647219
@@ -152,8 +152,8 @@ print(decrypt(e, -1, eulers_totient(p,q)))
 
 **Starter/RSA Decryption**
 
-the python code and my understanding
-```
+The Python code and my understanding
+```python
 N = 882564595536224140639625987659416029426239230804614613279163
 e = 65537
 # N = p*q
