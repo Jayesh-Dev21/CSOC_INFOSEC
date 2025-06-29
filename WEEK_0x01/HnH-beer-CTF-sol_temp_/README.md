@@ -62,8 +62,7 @@ and then there were a few dozen fake flags and one real one
 	"Points": 5,
 	"Category": "Misc",
 	"Description": "Welcome to the Hackers N' Hops Slow Pour CTF! 🍺 Before diving into the technical challenges, we need all participants to read and acknowledge our Code of Conduct. This isn't just bureaucratic paperwork - it's essential for maintaining a positive learning environment for everyone. Your mission: Navigate to the Code of Conduct page and thoroughly read through all the guidelines. Show us you've read everything by finding the hidden agreement mechanism. This is basically free points for doing what every good CTF participant should do anyway - understanding the rules! Plus, you might learn something about how we approach cybersecurity education at HnH.",
-	"Hint": "Sometimes the best flags come to those who... scroll with patience. 😉 Note: This challenge requires no technical exploitation - just good old-fashioned reading comprehension and a willingness to follow directions.""
-" 	
+	"Hint": "Sometimes the best flags come to those who... scroll with patience. 😉 Note: This challenge requires no technical exploitation - just good old-fashioned reading comprehension and a willingness to follow directions."
 }
 ```
 
