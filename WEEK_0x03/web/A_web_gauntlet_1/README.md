@@ -3,7 +3,7 @@
 link to the chall - [link](https://play.picoctf.org/practice/challenge/88?page=1&search=web)
 
 ---
-![vid](./web-gauntlet1sol.webm.mov)
+<video src="web-gauntlet1sol.webm.mov"></video>
 
 We are given two sites, and we have to log in as the `admin` 
 
