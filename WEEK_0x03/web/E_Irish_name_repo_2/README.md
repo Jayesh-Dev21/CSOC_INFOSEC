@@ -14,4 +14,4 @@ password - `qwerty` <!--does not matter-->
 
 and I got the flag!
 
-flag - `picoCTF{s0m3_SQL_fb3fe2ad}`
+flag - `picoCTF{m0R3_SQL_plz_fa983901}`
