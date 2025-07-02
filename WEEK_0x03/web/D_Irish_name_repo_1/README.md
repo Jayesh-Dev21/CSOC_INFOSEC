@@ -6,6 +6,7 @@ link to the chall - [link](https://play.picoctf.org/practice/challenge/80?page=1
 
 
 
+[vid.webm](https://github.com/user-attachments/assets/018952f5-8d40-476d-8bf9-f300a34d08cc)
 
 
 
