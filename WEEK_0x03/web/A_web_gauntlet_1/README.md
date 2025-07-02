@@ -4,6 +4,7 @@ link to the chall - [link](https://play.picoctf.org/practice/challenge/88?page=1
 
 ---
 <video src="./web-gauntlet1sol.mp4" type="video/mp4"></video>
+![](./web-gauntlet1sol.mp4)
 
 We are given two sites, and we have to log in as the `admin` 
 
