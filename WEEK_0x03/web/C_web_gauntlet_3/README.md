@@ -1,4 +1,4 @@
-# Web Gauntlet - 2
+# Web Gauntlet - 3
 
 link to the chall - [link](https://play.picoctf.org/practice/challenge/128?page=1&search=web)
 
