@@ -2,7 +2,7 @@
 
 Link to solutions of all web challenges:
 
- 1.	[WEB_Gauntlet_1](./A_web_gauntlet_1/README.md)
+ 1.	[WEB_Gauntlet_1](./A_web_gauntlet_1/)
  2.	[WEB_Gauntlet_2](./B_web_gauntlet_2/README.md)
  3.	[WEB_Gauntlet_3](./C_web_gauntlet_3/README.md)
  4.	[Irish_Name_Repo_1](./D_Irish_name_repo_1/README.md)
