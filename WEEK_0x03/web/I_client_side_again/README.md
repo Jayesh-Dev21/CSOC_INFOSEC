@@ -4,8 +4,7 @@ link to the chall - [link](https://play.picoctf.org/practice/challenge/69?diffic
 
 ---
 
-
-
+[Uploading vid.webm…]()
 
 ---
 on openning the given site, there was an array with jumbled flag, and a obfuscated verify function.
