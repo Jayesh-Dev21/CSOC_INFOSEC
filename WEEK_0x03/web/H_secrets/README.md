@@ -4,6 +4,7 @@ link to the chall - [link](https://play.picoctf.org/practice/challenge/296?diffi
 
 ---
 
+[vid.webm](https://github.com/user-attachments/assets/712df0cb-0f66-4e73-b041-31e2b8944843)
 
 
 ---
