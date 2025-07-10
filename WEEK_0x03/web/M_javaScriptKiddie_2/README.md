@@ -3,7 +3,7 @@
 link to the chall - [link](https://play.picoctf.org/practice/challenge/33?page=1&search=java%20sc)
 
 ---
-
+[vid.webm](https://github.com/user-attachments/assets/260e1f81-550b-4231-b0b0-32bfcaae4302)
 
 ---
 
