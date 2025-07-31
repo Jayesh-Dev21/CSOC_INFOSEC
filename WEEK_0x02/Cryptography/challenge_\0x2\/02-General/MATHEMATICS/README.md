@@ -83,7 +83,7 @@ int main(){
 
 **Extended GCD**
 
-First I wrote extended GCD code for the previous chall, I had implemented the same thing in my c program which was form my cso-101 lab
+First I wrote extended GCD code for the previous chall, I had implemented the same thing in my c program which was from my cso-101 lab
 ```python
 a=66528
 b=52920
