@@ -90,7 +90,7 @@ key = []
 for bh in bytes_from_hex:
   key.append(bh)
 kk = ""
-
+print()
 part_flag = "crypto{"
 i = 0
 for c in part_flag:
@@ -99,10 +99,11 @@ for c in part_flag:
   i += 1
   kk += chr(g)
   print(chr(g))
-print(kk)
+
+print(kk + chr(key[len(key)-1]^ord('}'))
 ```
 
-I got `myXORke` so I made it `myXORkey` and tried 
+I got `myXORkey` and tried 
 
 ```python
 hex = "0e0b213f26041e480b26217f27342e175d0e070a3c5b103e2526217f27342e175d0e077e263451150104" 
